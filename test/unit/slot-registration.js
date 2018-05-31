@@ -162,7 +162,7 @@ test("set slots", t => {
       count: 0
     }
   ]);
-})
+});
 
 test("calculate slots", t => {
   var registration = new SlotRegistration({
@@ -828,5 +828,121 @@ test("last person, different capacity per slot", t => {
 
   t.deepEqual(registration.register(), {
     time: new Date("3/2/2005 6:00 PM")
+  });
+});
+
+test("1st person overflow", t => {
+  var registration = new SlotRegistration(t.context.configs.rich);
+
+  registration.setOccupancy(
+    new Date("8/15/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/15/2018"))
+  );
+  registration.setOccupancy(
+    new Date("8/16/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/16/2018"))
+  );
+  registration.setOccupancy(
+    new Date("8/17/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/17/2018"))
+  );
+
+  t.deepEqual(registration.register(), {
+    time: new Date("8/15/2018 9:00 AM"),
+    location: "Library"
+  });
+});
+
+test("2nd person overflow", t => {
+  var registration = new SlotRegistration(t.context.configs.rich);
+
+  registration.setOccupancy(
+    new Date("8/15/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/15/2018")) + 1
+  );
+  registration.setOccupancy(
+    new Date("8/16/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/16/2018"))
+  );
+  registration.setOccupancy(
+    new Date("8/17/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/17/2018"))
+  );
+
+  t.deepEqual(registration.register(), {
+    time: new Date("8/15/2018 9:15 AM"),
+    location: "Library"
+  });
+});
+
+test("1st person in 2nd day, overflow", t => {
+  var registration = new SlotRegistration(t.context.configs.rich);
+
+  registration.setOccupancy(
+    new Date("8/15/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/15/2018")) +
+      registration.countSlotsInDay(new Date("8/15/2018"))
+  );
+  registration.setOccupancy(
+    new Date("8/16/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/16/2018"))
+  );
+  registration.setOccupancy(
+    new Date("8/17/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/17/2018"))
+  );
+
+  t.deepEqual(registration.register(), {
+    time: new Date("8/16/2018 9:00 AM"),
+    location: "Auditorium"
+  });
+});
+
+test("last person of 1st overflow", t => {
+  var registration = new SlotRegistration(t.context.configs.rich);
+
+  registration.setOccupancy(
+    new Date("8/15/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/15/2018")) +
+      registration.countSlotsInDay(new Date("8/15/2018"))
+  );
+  registration.setOccupancy(
+    new Date("8/16/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/16/2018")) +
+      registration.countSlotsInDay(new Date("8/16/2018"))
+  );
+  registration.setOccupancy(
+    new Date("8/17/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/17/2018")) +
+      registration.countSlotsInDay(new Date("8/17/2018")) - 1
+  );
+
+  t.deepEqual(registration.register(), {
+    time: new Date("8/17/2018 11:45 AM")
+  });
+});
+
+test("1st person, 2nd overflow", t => {
+  var registration = new SlotRegistration(t.context.configs.rich);
+
+  registration.setOccupancy(
+    new Date("8/15/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/15/2018")) +
+      registration.countSlotsInDay(new Date("8/15/2018"))
+  );
+  registration.setOccupancy(
+    new Date("8/16/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/16/2018")) +
+      registration.countSlotsInDay(new Date("8/16/2018"))
+  );
+  registration.setOccupancy(
+    new Date("8/17/2018"),
+    registration.getMaxOccupantsInDay(new Date("8/17/2018")) +
+      registration.countSlotsInDay(new Date("8/17/2018"))
+  );
+
+  t.deepEqual(registration.register(), {
+    time: new Date("8/15/2018 9:00 AM"),
+    location: "Library"
   });
 });

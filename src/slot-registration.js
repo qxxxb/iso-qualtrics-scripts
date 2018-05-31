@@ -142,7 +142,53 @@ export default class SlotRegistration {
     throw new RangeError("Date does not exist in time range");
   }
 
+  calculateOverflowLayers(date) {
+    return Math.floor(
+      (this.countOccupantsInDay(date) - this.getMaxOccupantsInDay(date)) /
+        this.countSlotsInDay(date)
+    );
+  }
+
+  getOccupancyWithLeastOverflowLayersAfterArrivalDate() {
+    var lowestOccupancy = this.occupancies[0];
+    var leastOverflow = this.calculateOverflowLayers(this.occupancies[0].date);
+    for (var i = 1; i < this.occupancies.length; i++) {
+      if (
+        this.arrivalDate != "On Time" &&
+        this.occupancies[i].date < this.arrivalDate
+      ) {
+        continue;
+      }
+
+      var overflow = this.calculateOverflowLayers(this.occupancies[i].date);
+      if (overflow < leastOverflow) {
+        leastOverflow = overflow;
+        lowestOccupancy = this.occupancies[i];
+      }
+    }
+    return lowestOccupancy;
+  }
+
+  countSlotsInDay(date) {
+    var amountOfSlots = 0;
+    for (var i = 0; i < this.slots.length; i++) {
+      if (this.slots[i].time.toDateString() == date.toDateString()) {
+        amountOfSlots++;
+      }
+    }
+    return amountOfSlots;
+  }
+
+  getIndexOfDayInSlots(date) {
+    for (var i = 0; i < this.slots.length; i++) {
+      if (this.slots[i].time.toDateString() == date.toDateString()) {
+        return i;
+      }
+    }
+  }
+
   getFirstAvailableSlot() {
+    var allAvailableDaysAreFull = true;
     for (var i = 0; i < this.occupancies.length; i++) {
       // assume that they are only available the day after they arrive
       if (this.occupancies[i].date <= this.arrivalDate) {
@@ -151,36 +197,45 @@ export default class SlotRegistration {
       if (this.isDayFull(this.occupancies[i].date)) {
         continue;
       }
+      allAvailableDaysAreFull = false;
       // now that we know the day is not full, we need to get the first
       // available slot
       var firstAvailableDay = this.occupancies[i].date;
       var occupantsInDay = this.countOccupantsInDay(this.occupancies[i].date);
       // the index in `this.slots` where the available day's slots begin
-      var sessionNumberOffset = null;
+      var dayOffset = null;
       // the offset of the index of the correct slot in the slots of the
       // available day
-      var slotIndexOffset = 0;
+      var slotOffset = 0;
       // the number of spaces still occupied after filling up each slot capacity
       var remainder = occupantsInDay;
       for (var i = 0; i < this.slots.length; i++) {
         if (
           this.slots[i].time.toDateString() == firstAvailableDay.toDateString()
         ) {
-          if (sessionNumberOffset == null) {
-            sessionNumberOffset = i;
+          if (dayOffset == null) {
+            dayOffset = i;
           }
           remainder = remainder - this.slots[i].capacity;
           if (remainder < 0) {
             break;
           }
-          slotIndexOffset++;
+          slotOffset++;
         }
       }
-      var sessionNumber = slotIndexOffset + sessionNumberOffset;
-      var slot = this.slots[sessionNumber];
-      delete slot.capacity;
-      return slot;
+      var sessionNumber = slotOffset + dayOffset;
+      break;
     }
+    if (allAvailableDaysAreFull) {
+      var lowestOccupancy = this.getOccupancyWithLeastOverflowLayersAfterArrivalDate();
+      var slotsInLeastOccupiedDay = this.countSlotsInDay(lowestOccupancy.date);
+      var slotOffset = lowestOccupancy.count % slotsInLeastOccupiedDay;
+      var dayOffset = this.getIndexOfDayInSlots(lowestOccupancy.date);
+      var sessionNumber = slotOffset + dayOffset;
+    }
+    var slot = this.slots[sessionNumber];
+    delete slot.capacity;
+    return slot;
   }
 
   register() {

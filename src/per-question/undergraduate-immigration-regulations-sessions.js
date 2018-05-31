@@ -1,4 +1,5 @@
 import SlotRegistration from "slot-registration.js";
+import DateToString from "date-to-string.js"
 
 Qualtrics.SurveyEngine.addOnload(() => {
   var visaType = Qualtrics.SurveyEngine.getEmbeddedData("Visa Type");
@@ -9,7 +10,7 @@ Qualtrics.SurveyEngine.addOnload(() => {
     );
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Date",
-      "Thursday, 8/22"
+      "Wednesday, 8/22"
     );
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Location",
@@ -69,7 +70,7 @@ Qualtrics.SurveyEngine.addOnload(() => {
   registration.setSlots(newSlots);
 
   var amountRegistered822 = Qualtrics.SurveyEngine.getEmbeddedData(
-    "8/22 F-1 Immigration Regulations Sessions Quota Count"
+    "8/22 F-1 Immigration Regulations Session Quota Count"
   );
   registration.setOccupancy(new Date("8/22/2018"), amountRegistered822);
 
@@ -86,12 +87,7 @@ Qualtrics.SurveyEngine.addOnload(() => {
     hour: "2-digit",
     minute: "2-digit"
   });
-  var slotDate = slot.time.toLocaleString("en-US", {
-    timeZone: "America/New_York",
-    weekday: "long",
-    month: "numeric",
-    day: "numeric"
-  });
+  var slotDate = DateToString(slot.time);
   var slotLocation = slot.location;
 
   Qualtrics.SurveyEngine.setEmbeddedData(
