@@ -6,11 +6,11 @@ Qualtrics.SurveyEngine.addOnload(() => {
   if (visaType == "J-1") {
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Time",
-      AthensDateTime.timeToString(AthensDateTime.create("2018-08-17T10:30"))
+      AthensDateTime.timeToString(AthensDateTime.create("2018-08-22T11:00"))
     );
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Date",
-      AthensDateTime.dateToString(AthensDateTime.create("2018-08-22T15:45"))
+      AthensDateTime.dateToString(AthensDateTime.create("2018-08-22T11:00"))
     );
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Location",
@@ -24,12 +24,12 @@ Qualtrics.SurveyEngine.addOnload(() => {
     slotRanges: [
       {
         time: {
-          start: AthensDateTime.create("2018-08-22T09:15"),
-          end: AthensDateTime.create("2018-08-22T11:45")
+          start: AthensDateTime.create("2018-08-22T09:00"),
+          end: AthensDateTime.create("2018-08-22T12:00")
         }
       }
     ],
-    slotLength: 75,
+    slotLength: 60,
     slotCapacity: 0
   });
 

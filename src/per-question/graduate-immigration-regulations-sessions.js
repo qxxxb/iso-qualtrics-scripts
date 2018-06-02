@@ -2,17 +2,15 @@ import SlotRegistration from "slot-registration.js";
 import * as AthensDateTime from "athens-date-time.js";
 
 Qualtrics.SurveyEngine.addOnload(() => {
-  var visaType = Qualtrics.SurveyEngine.getEmbeddedData(
-    "Visa Type"
-  );
+  var visaType = Qualtrics.SurveyEngine.getEmbeddedData("Visa Type");
   if (visaType == "J-1") {
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Time",
-      AthensDateTime.timeToString(AthensDateTime.create("2018-08-17T15:45"))
+      AthensDateTime.timeToString(AthensDateTime.create("2018-08-17T15:00"))
     );
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Date",
-      AthensDateTime.dateToString(AthensDateTime.create("2018-08-17T15:45"))
+      AthensDateTime.dateToString(AthensDateTime.create("2018-08-17T15:00"))
     );
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Location",
@@ -26,18 +24,18 @@ Qualtrics.SurveyEngine.addOnload(() => {
     slotRanges: [
       {
         time: {
-          start: AthensDateTime.create("2018-08-16T13:15"),
-          end: AthensDateTime.create("2018-08-16T15:45")
+          start: AthensDateTime.create("2018-08-16T13:00"),
+          end: AthensDateTime.create("2018-08-16T16:00")
         }
       },
       {
         time: {
-          start: AthensDateTime.create("2018-08-17T13:15"),
-          end: AthensDateTime.create("2018-08-17T16:30")
+          start: AthensDateTime.create("2018-08-17T13:00"),
+          end: AthensDateTime.create("2018-08-17T16:00")
         }
       }
     ],
-    slotLength: 75,
+    slotLength: 60,
     slotCapacity: 0
   });
 
@@ -83,8 +81,14 @@ Qualtrics.SurveyEngine.addOnload(() => {
   var amountRegistered817 = Qualtrics.SurveyEngine.getEmbeddedData(
     "8/17 F-1 Immigration Regulations Session Quota Count"
   );
-  registration.setOccupancy(AthensDateTime.create("2018-08-16"), amountRegistered816);
-  registration.setOccupancy(AthensDateTime.create("2018-08-17"), amountRegistered817);
+  registration.setOccupancy(
+    AthensDateTime.create("2018-08-16"),
+    amountRegistered816
+  );
+  registration.setOccupancy(
+    AthensDateTime.create("2018-08-17"),
+    amountRegistered817
+  );
 
   var arrivalDate = Qualtrics.SurveyEngine.getEmbeddedData("Arrival Date");
   if (arrivalDate != "On Time") {
