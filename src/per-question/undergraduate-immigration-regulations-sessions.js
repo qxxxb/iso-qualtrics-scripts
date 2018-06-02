@@ -1,16 +1,16 @@
 import SlotRegistration from "slot-registration.js";
-import DateToString from "date-to-string.js"
+import * as AthensDateTime from "athens-date-time.js";
 
 Qualtrics.SurveyEngine.addOnload(() => {
   var visaType = Qualtrics.SurveyEngine.getEmbeddedData("Visa Type");
   if (visaType == "J-1") {
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Time",
-      "10:30 AM"
+      AthensDateTime.timeToString(AthensDateTime.create("2018-08-17T10:30"))
     );
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Date",
-      "Wednesday, 8/22"
+      AthensDateTime.dateToString(AthensDateTime.create("2018-08-22T15:45"))
     );
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Location",
@@ -24,8 +24,8 @@ Qualtrics.SurveyEngine.addOnload(() => {
     slotRanges: [
       {
         time: {
-          start: new Date("8/22/2018 9:15 AM"),
-          end: new Date("8/22/2018 11:45 AM")
+          start: AthensDateTime.create("2018-08-22T09:15"),
+          end: AthensDateTime.create("2018-08-22T11:45")
         }
       }
     ],
@@ -62,7 +62,7 @@ Qualtrics.SurveyEngine.addOnload(() => {
   // using JSON parse and stringify for deep cloning does not convert Dates
   // back to an object
   for (var i = 0; i < newSlots.length; i++) {
-    newSlots[i].time = new Date(newSlots[i].time);
+    newSlots[i].time = AthensDateTime.create(newSlots[i].time);
   }
   // reserve final slot for students with J-1 visas
   newSlots.pop();
@@ -72,34 +72,29 @@ Qualtrics.SurveyEngine.addOnload(() => {
   var amountRegistered822 = Qualtrics.SurveyEngine.getEmbeddedData(
     "8/22 F-1 Immigration Regulations Session Quota Count"
   );
-  registration.setOccupancy(new Date("8/22/2018"), amountRegistered822);
+  registration.setOccupancy(
+    AthensDateTime.create("2018-08-22"),
+    amountRegistered822
+  );
 
   var arrivalDate = Qualtrics.SurveyEngine.getEmbeddedData("Arrival Date");
   if (arrivalDate != "On Time") {
-    var arrivalDate = new Date(arrivalDate);
+    var arrivalDate = AthensDateTime.create(arrivalDate);
   }
   registration.setArrivalDate(arrivalDate);
 
   var slot = registration.register();
 
-  var slotTime = slot.time.toLocaleTimeString("en-US", {
-    timeZone: "America/New_York",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-  var slotDate = DateToString(slot.time);
-  var slotLocation = slot.location;
-
   Qualtrics.SurveyEngine.setEmbeddedData(
     "Immigration Regulations Session Time",
-    slotTime
+    AthensDateTime.timeToString(slot.time)
   );
   Qualtrics.SurveyEngine.setEmbeddedData(
     "Immigration Regulations Session Date",
-    slotDate
+    AthensDateTime.dateToString(slot.time)
   );
   Qualtrics.SurveyEngine.setEmbeddedData(
     "Immigration Regulations Session Location",
-    slotLocation
+    slot.location
   );
 });

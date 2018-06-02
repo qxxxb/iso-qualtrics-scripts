@@ -1,5 +1,5 @@
 import GroupRegistration from "group-registration.js";
-import TimeRangeToString from "time-range-to-string.js";
+import * as AthensDateTime from "athens-date-time.js";
 
 Qualtrics.SurveyEngine.addOnload(() => {
   var registration = new GroupRegistration({
@@ -8,15 +8,15 @@ Qualtrics.SurveyEngine.addOnload(() => {
         events: {
           academicSuccess: {
             time: {
-              start: new Date("8/14/2018 2:00 PM"),
-              end: new Date("8/14/2018 3:00 PM")
+              start: AthensDateTime.create("2018-08-14T14:00"),
+              end: AthensDateTime.create("2018-08-14T15:00")
             },
             location: "Baker Center Theater"
           },
           titleIX: {
             time: {
-              start: new Date("8/14/2018 3:00 PM"),
-              end: new Date("8/14/2018 4:00 PM")
+              start: AthensDateTime.create("2018-08-14T15:00"),
+              end: AthensDateTime.create("2018-08-14T16:00")
             },
             location: "Baker Center, Multipurpose Room"
           }
@@ -26,15 +26,15 @@ Qualtrics.SurveyEngine.addOnload(() => {
         events: {
           titleIX: {
             time: {
-              start: new Date("8/14/2018 2:00 PM"),
-              end: new Date("8/14/2018 3:00 PM")
+              start: AthensDateTime.create("2018-08-14T14:00"),
+              end: AthensDateTime.create("2018-08-14T15:00")
             },
             location: "Baker Center, Multipurpose Room"
           },
           academicSuccess: {
             time: {
-              start: new Date("8/14/2018 3:00 PM"),
-              end: new Date("8/14/2018 4:00 PM")
+              start: AthensDateTime.create("2018-08-14T15:00"),
+              end: AthensDateTime.create("2018-08-14T16:00")
             },
             location: "Baker Center Theater"
           }
@@ -57,19 +57,19 @@ Qualtrics.SurveyEngine.addOnload(() => {
   );
 
   var groupToBeRegisteredIn = registration.register();
-  var academicSuccessTimeRangeString = TimeRangeToString(
-    groupToBeRegisteredIn.events.academicSuccess.time
-  );
-  var titleIXTimeRangeString = TimeRangeToString(
-    groupToBeRegisteredIn.events.titleIX.time
-  );
 
   Qualtrics.SurveyEngine.setEmbeddedData(
     "Academic Success Time",
-    academicSuccessTimeRangeString
+    AthensDateTime.timeRangeToString(
+      groupToBeRegisteredIn.events.academicSuccess.time.start,
+      groupToBeRegisteredIn.events.academicSuccess.time.end
+    )
   );
   Qualtrics.SurveyEngine.setEmbeddedData(
     "Title IX Time",
-    titleIXTimeRangeString
+    AthensDateTime.timeRangeToString(
+      groupToBeRegisteredIn.events.titleIX.time.start,
+      groupToBeRegisteredIn.events.titleIX.time.end
+    )
   );
 });

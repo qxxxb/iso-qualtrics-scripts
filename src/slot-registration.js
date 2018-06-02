@@ -1,3 +1,6 @@
+import { Duration } from "luxon";
+import * as AthensDateTime from "./athens-date-time.js";
+
 export default class SlotRegistration {
   constructor(config) {
     // TODO: config validation
@@ -40,9 +43,10 @@ export default class SlotRegistration {
 
         // calculate the next slot
         // 60000 milliseconds in a minute
-        slotTimeStart = new Date(
-          slotTimeStart.getTime() + this.slotLength * 60000
-        );
+        var slotDuration = Duration.fromObject({
+          minutes: this.slotLength
+        });
+        slotTimeStart = slotTimeStart.plus(slotDuration);
       }
     }
   }
@@ -59,14 +63,14 @@ export default class SlotRegistration {
         dates.length == 0 ||
         ((dates, testDate) => {
           for (var j = 0; j < dates.length; j++) {
-            if (testDate.toDateString() == dates[j].toDateString()) {
+            if (AthensDateTime.hasSameDate(testDate, dates[j])) {
               return false;
             }
           }
           return true;
         })(dates, this.slots[i].time)
       ) {
-        dates.push(new Date(this.slots[i].time.toLocaleDateString()));
+        dates.push(this.slots[i].time);
       }
     }
     return dates;
@@ -87,7 +91,7 @@ export default class SlotRegistration {
     // valid occupancy
     var previousEntryExists = false;
     for (var i = 0; i < this.occupancies.length; i++) {
-      if (this.occupancies[i].date.toDateString() == slotsDate.toDateString()) {
+      if (AthensDateTime.hasSameDate(this.occupancies[i].date, slotsDate)) {
         this.occupancies[i].count = count;
         return;
       }
@@ -97,7 +101,7 @@ export default class SlotRegistration {
 
   countOccupantsInDay(date) {
     for (var i = 0; i < this.occupancies.length; i++) {
-      if (this.occupancies[i].date.toDateString() == date.toDateString()) {
+      if (AthensDateTime.hasSameDate(this.occupancies[i].date, date)) {
         return this.occupancies[i].count;
       }
     }
@@ -112,7 +116,7 @@ export default class SlotRegistration {
     var maxOccupants = 0;
     var dayExistsInSlots = false;
     for (var i = 0; i < this.slots.length; i++) {
-      if (this.slots[i].time.toDateString() == date.toDateString()) {
+      if (AthensDateTime.hasSameDate(this.slots[i].time, date)) {
         dayExistsInSlots = true;
         maxOccupants += this.slots[i].capacity;
       }
@@ -125,7 +129,7 @@ export default class SlotRegistration {
 
   isDayFull(date) {
     for (var i = 0; i < this.occupancies.length; i++) {
-      if (this.occupancies[i].date.toDateString() == date.toDateString()) {
+      if (AthensDateTime.hasSameDate(this.occupancies[i].date, date)) {
         try {
           var maxOccupants = this.getMaxOccupantsInDay(date);
         } catch (e) {
@@ -149,14 +153,28 @@ export default class SlotRegistration {
     );
   }
 
+  isAvailableForDate(date) {
+    if (this.arrivalDate == "On Time") {
+      return true;
+    }
+    if (date < this.getEarliestTimeAvailable()) {
+      return false;
+    }
+    return true;
+  }
+
+  getEarliestTimeAvailable() {
+    if (this.arrivalDate != "On Time") {
+      return this.arrivalDate.plus({ days: 1 }).startOf("day");
+    }
+  }
+
   getOccupancyWithLeastOverflowLayersAfterArrivalDate() {
     var lowestOccupancy = this.occupancies[0];
     var leastOverflow = this.calculateOverflowLayers(this.occupancies[0].date);
+    var earliestTimeAvailable = this.getEarliestTimeAvailable();
     for (var i = 1; i < this.occupancies.length; i++) {
-      if (
-        this.arrivalDate != "On Time" &&
-        this.occupancies[i].date < this.arrivalDate
-      ) {
+      if (!this.isAvailableForDate(this.occupancies[i].date)) {
         continue;
       }
 
@@ -172,7 +190,7 @@ export default class SlotRegistration {
   countSlotsInDay(date) {
     var amountOfSlots = 0;
     for (var i = 0; i < this.slots.length; i++) {
-      if (this.slots[i].time.toDateString() == date.toDateString()) {
+      if (AthensDateTime.hasSameDate(this.slots[i].time, date)) {
         amountOfSlots++;
       }
     }
@@ -181,7 +199,7 @@ export default class SlotRegistration {
 
   getIndexOfDayInSlots(date) {
     for (var i = 0; i < this.slots.length; i++) {
-      if (this.slots[i].time.toDateString() == date.toDateString()) {
+      if (AthensDateTime.hasSameDate(this.slots[i].time, date)) {
         return i;
       }
     }
@@ -191,7 +209,7 @@ export default class SlotRegistration {
     var allAvailableDaysAreFull = true;
     for (var i = 0; i < this.occupancies.length; i++) {
       // assume that they are only available the day after they arrive
-      if (this.occupancies[i].date <= this.arrivalDate) {
+      if (!this.isAvailableForDate(this.occupancies[i].date)) {
         continue;
       }
       if (this.isDayFull(this.occupancies[i].date)) {
@@ -210,9 +228,7 @@ export default class SlotRegistration {
       // the number of spaces still occupied after filling up each slot capacity
       var remainder = occupantsInDay;
       for (var i = 0; i < this.slots.length; i++) {
-        if (
-          this.slots[i].time.toDateString() == firstAvailableDay.toDateString()
-        ) {
+        if (AthensDateTime.hasSameDate(this.slots[i].time, firstAvailableDay)) {
           if (dayOffset == null) {
             dayOffset = i;
           }
@@ -233,7 +249,8 @@ export default class SlotRegistration {
       var dayOffset = this.getIndexOfDayInSlots(lowestOccupancy.date);
       var sessionNumber = slotOffset + dayOffset;
     }
-    var slot = this.slots[sessionNumber];
+    // shallow copy
+    var slot = Object.assign({}, this.slots[sessionNumber]);
     delete slot.capacity;
     return slot;
   }

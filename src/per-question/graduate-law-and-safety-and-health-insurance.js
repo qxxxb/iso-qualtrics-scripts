@@ -1,5 +1,5 @@
 import GroupRegistration from "group-registration.js";
-import TimeRangeToString from "time-range-to-string.js";
+import * as AthensDateTime from "athens-date-time.js";
 
 Qualtrics.SurveyEngine.addOnload(() => {
   var registration = new GroupRegistration({
@@ -8,15 +8,15 @@ Qualtrics.SurveyEngine.addOnload(() => {
         events: {
           lawAndSafety: {
             time: {
-              start: new Date("8/17/2018 9:00 AM"),
-              end: new Date("8/17/2018 10:00 AM")
+              start: AthensDateTime.create("2018-08-17T09:00"),
+              end: AthensDateTime.create("2018-08-17T10:00")
             },
             location: "Baker Center Theater"
           },
           healthInsurance: {
             time: {
-              start: new Date("8/17/2018 10:15 AM"),
-              end: new Date("8/17/2018 11:15 AM")
+              start: AthensDateTime.create("2018-08-17T10:15"),
+              end: AthensDateTime.create("2018-08-17T11:15")
             },
             location: "Baker Center, Multipurpose Room"
           }
@@ -26,15 +26,15 @@ Qualtrics.SurveyEngine.addOnload(() => {
         events: {
           lawAndSafety: {
             time: {
-              start: new Date("8/17/2018 10:15 AM"),
-              end: new Date("8/17/2018 11:15 AM")
+              start: AthensDateTime.create("2018-08-17T10:15"),
+              end: AthensDateTime.create("2018-08-17T11:15")
             },
             location: "Baker Center Theater"
           },
           healthInsurance: {
             time: {
-              start: new Date("8/17/2018 9:00 AM"),
-              end: new Date("8/17/2018 10:00 AM")
+              start: AthensDateTime.create("2018-08-17T09:00"),
+              end: AthensDateTime.create("2018-08-17T10:00")
             },
             location: "Baker Center, Multipurpose Room"
           }
@@ -57,20 +57,20 @@ Qualtrics.SurveyEngine.addOnload(() => {
   );
 
   var groupToBeRegisteredIn = registration.register();
-  var lawAndSafetyTimeRangeString = TimeRangeToString(
-    groupToBeRegisteredIn.events.lawAndSafety.time
-  );
-  var healthInsuranceTimeRangeString = TimeRangeToString(
-    groupToBeRegisteredIn.events.healthInsurance.time
-  );
 
   Qualtrics.SurveyEngine.setEmbeddedData(
     "Law and Safety Time",
-    lawAndSafetyTimeRangeString
+    AthensDateTime.timeRangeToString(
+      groupToBeRegisteredIn.events.lawAndSafety.time.start,
+      groupToBeRegisteredIn.events.lawAndSafety.time.end
+    )
   );
   Qualtrics.SurveyEngine.setEmbeddedData(
     "Health Insurance Time",
-    healthInsuranceTimeRangeString
+    AthensDateTime.timeRangeToString(
+      groupToBeRegisteredIn.events.healthInsurance.time.start,
+      groupToBeRegisteredIn.events.healthInsurance.time.end
+    )
   );
   Qualtrics.SurveyEngine.setEmbeddedData(
     "Law and Safety Location",

@@ -1,21 +1,21 @@
 import SlotRegistration from "slot-registration.js";
-import DateToString from "date-to-string.js"
+import * as AthensDateTime from "athens-date-time.js";
 
 Qualtrics.SurveyEngine.addOnload(() => {
   var registration = new SlotRegistration({
     slotRanges: [
       {
         time: {
-          start: new Date("8/20/2018 2:00 PM"),
-          end: new Date("8/20/2018 4:00 PM")
+          start: AthensDateTime.create("2018-08-20T14:00"),
+          end: AthensDateTime.create("2018-08-20T16:00")
         }
       },
       {
         time: {
-          start: new Date("8/21/2018 1:00 PM"),
-          end: new Date("8/21/2018 5:00 PM")
+          start: AthensDateTime.create("2018-08-21T13:00"),
+          end: AthensDateTime.create("2018-08-21T17:00")
         }
-      },
+      }
     ],
     slotLength: 15,
     slotCapacity: 10
@@ -27,24 +27,29 @@ Qualtrics.SurveyEngine.addOnload(() => {
   var amountRegistered821 = Qualtrics.SurveyEngine.getEmbeddedData(
     "8/21 Paperwork Check-in Quota Count"
   );
-  registration.setOccupancy(new Date("8/20/2018"), amountRegistered820);
-  registration.setOccupancy(new Date("8/21/2018"), amountRegistered821);
+  registration.setOccupancy(
+    AthensDateTime.create("2018-08-20"),
+    amountRegistered820
+  );
+  registration.setOccupancy(
+    AthensDateTime.create("2018-08-21"),
+    amountRegistered821
+  );
 
   var arrivalDate = Qualtrics.SurveyEngine.getEmbeddedData("Arrival Date");
   if (arrivalDate != "On Time") {
-    var arrivalDate = new Date(arrivalDate);
+    var arrivalDate = AthensDateTime.create(arrivalDate);
   }
   registration.setArrivalDate(arrivalDate);
 
   var slot = registration.register();
 
-  var slotTime = slot.time.toLocaleTimeString("en-US", {
-    timeZone: "America/New_York",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-  var slotDate = DateToString(slot.time);
-
-  Qualtrics.SurveyEngine.setEmbeddedData("Paperwork Check-in Time", slotTime);
-  Qualtrics.SurveyEngine.setEmbeddedData("Paperwork Check-in Date", slotDate);
+  Qualtrics.SurveyEngine.setEmbeddedData(
+    "Paperwork Check-in Time",
+    AthensDateTime.timeToString(slot.time)
+  );
+  Qualtrics.SurveyEngine.setEmbeddedData(
+    "Paperwork Check-in Date",
+    AthensDateTime.dateToString(slot.time)
+  );
 });

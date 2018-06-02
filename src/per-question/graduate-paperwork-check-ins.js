@@ -1,25 +1,25 @@
 import SlotRegistration from "slot-registration.js";
-import DateToString from "date-to-string.js"
+import * as AthensDateTime from "athens-date-time.js";
 
 Qualtrics.SurveyEngine.addOnload(() => {
   var registration = new SlotRegistration({
     slotRanges: [
       {
         time: {
-          start: new Date("8/15/2018 09:00 AM"),
-          end: new Date("8/15/2018 12:00 PM")
+          start: AthensDateTime.create("2018-08-15T09:00"),
+          end: AthensDateTime.create("2018-08-16T00:00")
         }
       },
       {
         time: {
-          start: new Date("8/15/2018 1:00 PM"),
-          end: new Date("8/15/2018 4:00 PM")
+          start: AthensDateTime.create("2018-08-15T13:00"),
+          end: AthensDateTime.create("2018-08-15T16:00")
         }
       },
       {
         time: {
-          start: new Date("8/16/2018 9:00 AM"),
-          end: new Date("8/16/2018 12:00 PM")
+          start: AthensDateTime.create("2018-08-16T09:00"),
+          end: AthensDateTime.create("2018-08-17T00:00")
         }
       }
     ],
@@ -33,24 +33,29 @@ Qualtrics.SurveyEngine.addOnload(() => {
   var amountRegistered816 = Qualtrics.SurveyEngine.getEmbeddedData(
     "8/16 Paperwork Check-in Quota Count"
   );
-  registration.setOccupancy(new Date("8/15/2018"), amountRegistered815);
-  registration.setOccupancy(new Date("8/16/2018"), amountRegistered816);
+  registration.setOccupancy(
+    AthensDateTime.create("2018-08-15"),
+    amountRegistered815
+  );
+  registration.setOccupancy(
+    AthensDateTime.create("2018-08-16"),
+    amountRegistered816
+  );
 
   var arrivalDate = Qualtrics.SurveyEngine.getEmbeddedData("Arrival Date");
   if (arrivalDate != "On Time") {
-    var arrivalDate = new Date(arrivalDate);
+    var arrivalDate = AthensDateTime.create(arrivalDate);
   }
   registration.setArrivalDate(arrivalDate);
 
   var slot = registration.register();
 
-  var slotTime = slot.time.toLocaleTimeString("en-US", {
-    timeZone: "America/New_York",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-  var slotDate = DateToString(slot.time);
-
-  Qualtrics.SurveyEngine.setEmbeddedData("Paperwork Check-in Time", slotTime);
-  Qualtrics.SurveyEngine.setEmbeddedData("Paperwork Check-in Date", slotDate);
+  Qualtrics.SurveyEngine.setEmbeddedData(
+    "Paperwork Check-in Time",
+    AthensDateTime.timeToString(slot.time)
+  );
+  Qualtrics.SurveyEngine.setEmbeddedData(
+    "Paperwork Check-in Date",
+    AthensDateTime.dateToString(slot.time)
+  );
 });

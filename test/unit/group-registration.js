@@ -1,5 +1,6 @@
 import test from "ava";
 import GroupRegistration from "../../src/group-registration.js";
+import * as AthensDateTime from "../../src/athens-date-time.js";
 
 test.before(t => {
   t.context.configs = {
@@ -9,15 +10,15 @@ test.before(t => {
           events: {
             lawAndSafety: {
               time: {
-                start: new Date("8/17/2018 9:00 AM"),
-                end: new Date("8/17/2018 10:00 AM")
+                start: AthensDateTime.create("2018-08-17T09:00"),
+                end: AthensDateTime.create("2018-08-17T10:00")
               },
               location: "Baker Center Theater"
             },
             healthInsurance: {
               time: {
-                start: new Date("8/17/2018 10:15 AM"),
-                end: new Date("8/17/2018 11:15 AM")
+                start: AthensDateTime.create("2018-08-17T10:15"),
+                end: AthensDateTime.create("2018-08-17T11:15")
               },
               location: "Baker Center, Multipurpose Room"
             }
@@ -27,15 +28,15 @@ test.before(t => {
           events: {
             lawAndSafety: {
               time: {
-                start: new Date("8/17/2018 10:15 AM"),
-                end: new Date("8/17/2018 11:15 AM")
+                start: AthensDateTime.create("2018-08-17T10:15"),
+                end: AthensDateTime.create("2018-08-17T11:15")
               },
               location: "Baker Center Theater"
             },
             healthInsurance: {
               time: {
-                start: new Date("8/17/2018 9:00 AM"),
-                end: new Date("8/17/2018 10:00 AM")
+                start: AthensDateTime.create("2018-08-17T09:00"),
+                end: AthensDateTime.create("2018-08-17T10:00")
               },
               location: "Baker Center, Multipurpose Room"
             }
@@ -46,13 +47,13 @@ test.before(t => {
   };
   t.context.deepCloneConfig = (configName, configs = t.context.configs) => {
     var configClone = JSON.parse(JSON.stringify(configs[configName]));
-    // Dates are not processed correctly with JSON deep clone
+    // dates are not processed correctly with JSON deep clone
     for (var i = 0; i < configClone.groups.length; i++) {
       for (var eventName in configClone.groups[i].events) {
-        configClone.groups[i].events[eventName].time.start = new Date(
+        configClone.groups[i].events[eventName].time.start = AthensDateTime.create(
           configClone.groups[i].events[eventName].time.start
         );
-        configClone.groups[i].events[eventName].time.end = new Date(
+        configClone.groups[i].events[eventName].time.end = AthensDateTime.create(
           configClone.groups[i].events[eventName].time.end
         );
       }
@@ -68,15 +69,15 @@ test("1st person", t => {
     events: {
       lawAndSafety: {
         time: {
-          start: new Date("8/17/2018 9:00 AM"),
-          end: new Date("8/17/2018 10:00 AM")
+          start: AthensDateTime.create("2018-08-17T09:00"),
+          end: AthensDateTime.create("2018-08-17T10:00")
         },
         location: "Baker Center Theater"
       },
       healthInsurance: {
         time: {
-          start: new Date("8/17/2018 10:15 AM"),
-          end: new Date("8/17/2018 11:15 AM")
+          start: AthensDateTime.create("2018-08-17T10:15"),
+          end: AthensDateTime.create("2018-08-17T11:15")
         },
         location: "Baker Center, Multipurpose Room"
       }
@@ -92,15 +93,15 @@ test("2nd person", t => {
     events: {
       lawAndSafety: {
         time: {
-          start: new Date("8/17/2018 10:15 AM"),
-          end: new Date("8/17/2018 11:15 AM")
+          start: AthensDateTime.create("2018-08-17T10:15"),
+          end: AthensDateTime.create("2018-08-17T11:15")
         },
         location: "Baker Center Theater"
       },
       healthInsurance: {
         time: {
-          start: new Date("8/17/2018 9:00 AM"),
-          end: new Date("8/17/2018 10:00 AM")
+          start: AthensDateTime.create("2018-08-17T09:00"),
+          end: AthensDateTime.create("2018-08-17T10:00")
         },
         location: "Baker Center, Multipurpose Room"
       }
@@ -117,15 +118,15 @@ test("3rd person", t => {
     events: {
       lawAndSafety: {
         time: {
-          start: new Date("8/17/2018 9:00 AM"),
-          end: new Date("8/17/2018 10:00 AM")
+          start: AthensDateTime.create("2018-08-17T09:00"),
+          end: AthensDateTime.create("2018-08-17T10:00")
         },
         location: "Baker Center Theater"
       },
       healthInsurance: {
         time: {
-          start: new Date("8/17/2018 10:15 AM"),
-          end: new Date("8/17/2018 11:15 AM")
+          start: AthensDateTime.create("2018-08-17T10:15"),
+          end: AthensDateTime.create("2018-08-17T11:15")
         },
         location: "Baker Center, Multipurpose Room"
       }
@@ -141,15 +142,15 @@ test("3rd person, 2 already in group 0", t => {
     events: {
       lawAndSafety: {
         time: {
-          start: new Date("8/17/2018 10:15 AM"),
-          end: new Date("8/17/2018 11:15 AM")
+          start: AthensDateTime.create("2018-08-17T10:15"),
+          end: AthensDateTime.create("2018-08-17T11:15")
         },
         location: "Baker Center Theater"
       },
       healthInsurance: {
         time: {
-          start: new Date("8/17/2018 9:00 AM"),
-          end: new Date("8/17/2018 10:00 AM")
+          start: AthensDateTime.create("2018-08-17T09:00"),
+          end: AthensDateTime.create("2018-08-17T10:00")
         },
         location: "Baker Center, Multipurpose Room"
       }
