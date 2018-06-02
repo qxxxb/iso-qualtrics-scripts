@@ -40,7 +40,6 @@ export default class SlotRegistration {
         this.slots.push(slot);
 
         // calculate the next slot
-        // 60000 milliseconds in a minute
         var slotDuration = Duration.fromObject({
           minutes: this.slotLength
         });
