@@ -3,8 +3,6 @@ import * as AthensDateTime from "./athens-date-time.js";
 
 export default class SlotRegistration {
   constructor(config) {
-    // TODO: config validation
-
     this.slotLength = config.slotLength;
 
     this.slots = [];
