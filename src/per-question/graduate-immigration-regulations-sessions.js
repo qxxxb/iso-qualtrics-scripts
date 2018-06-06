@@ -6,15 +6,15 @@ Qualtrics.SurveyEngine.addOnload(() => {
   if (visaType == "J-1") {
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Time",
-      AthensDateTime.timeToString(AthensDateTime.create("2018-08-17T15:00"))
+      AthensDateTime.timeToString(AthensDateTime.create("2018-08-17T15:30"))
     );
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Date",
-      AthensDateTime.dateToString(AthensDateTime.create("2018-08-17T15:00"))
+      AthensDateTime.dateToString(AthensDateTime.create("2018-08-17T16:30"))
     );
     Qualtrics.SurveyEngine.setEmbeddedData(
       "Immigration Regulations Session Location",
-      "Baker Room, Room 230"
+      "Baker Center, 2nd Floor, Room 230"
     );
     return;
   }
@@ -25,17 +25,18 @@ Qualtrics.SurveyEngine.addOnload(() => {
       {
         time: {
           start: AthensDateTime.create("2018-08-16T13:00"),
-          end: AthensDateTime.create("2018-08-16T16:00")
+          end: AthensDateTime.create("2018-08-16T15:15")
         }
       },
       {
         time: {
           start: AthensDateTime.create("2018-08-17T13:00"),
-          end: AthensDateTime.create("2018-08-17T16:00")
+          end: AthensDateTime.create("2018-08-17T16:30")
         }
       }
     ],
     slotLength: 60,
+    breakLength: 15,
     slotCapacity: 0
   });
 
@@ -46,21 +47,21 @@ Qualtrics.SurveyEngine.addOnload(() => {
     var roomCapacities = [
       {
         room: 239,
-        capacity: 20
+        capacity: 24
       },
       {
         room: 231,
-        capacity: 30
+        capacity: 48
       },
       {
         room: 230,
-        capacity: 25
+        capacity: 28
       }
     ];
     for (var j = 0; j < roomCapacities.length; j++) {
       // deep clone
       var newSlot = JSON.parse(JSON.stringify(originalSlot));
-      newSlot.location = "Baker Center, Room " + roomCapacities[j].room;
+      newSlot.location = "Baker Center, 2nd Floor, Room " + roomCapacities[j].room;
       newSlot.capacity = roomCapacities[j].capacity;
       newSlots.push(newSlot);
     }

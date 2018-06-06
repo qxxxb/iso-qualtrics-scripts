@@ -11,14 +11,14 @@ Qualtrics.SurveyEngine.addOnload(() => {
               start: AthensDateTime.create("2018-08-17T09:00"),
               end: AthensDateTime.create("2018-08-17T10:00")
             },
-            location: "Baker Center Theater"
+            location: "Baker Center, 2nd Floor, Baker Theater"
           },
           healthInsurance: {
             time: {
               start: AthensDateTime.create("2018-08-17T10:15"),
               end: AthensDateTime.create("2018-08-17T11:15")
             },
-            location: "Baker Center, Multipurpose Room"
+            location: "Baker Center, 2nd Floor Multipurpose Room (240/242)"
           }
         }
       },
@@ -29,14 +29,14 @@ Qualtrics.SurveyEngine.addOnload(() => {
               start: AthensDateTime.create("2018-08-17T10:15"),
               end: AthensDateTime.create("2018-08-17T11:15")
             },
-            location: "Baker Center Theater"
+            location: "Baker Center, 2nd Floor, Baker Theater"
           },
           healthInsurance: {
             time: {
               start: AthensDateTime.create("2018-08-17T09:00"),
               end: AthensDateTime.create("2018-08-17T10:00")
             },
-            location: "Baker Center, Multipurpose Room"
+            location: "Baker Center, 2nd Floor Multipurpose Room (240/242)"
           }
         }
       }

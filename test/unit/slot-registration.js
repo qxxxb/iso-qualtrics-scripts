@@ -131,6 +131,19 @@ test.before(t => {
       ],
       slotLength: 15,
       slotCapacity: 10
+    },
+    break: {
+      slotRanges: [
+        {
+          time: {
+            start: AthensDateTime.create("2005-01-05T08:00"),
+            end: AthensDateTime.create("2005-01-05T11:00")
+          }
+        }
+      ],
+      slotLength: 45,
+      breakLength: 15,
+      slotCapacity: 10
     }
   };
 });
@@ -1035,4 +1048,23 @@ test("1st person, 2nd overflow", t => {
     time: AthensDateTime.create("2018-08-15T09:00"),
     location: "Library"
   });
+});
+
+test("test calculate slots with break", t => {
+  var registration = new SlotRegistration(t.context.configs.break);
+
+  t.deepEqual(registration.slots, [
+    {
+      time: AthensDateTime.create("2005-01-05T08:00"),
+      capacity: 10
+    },
+    {
+      time: AthensDateTime.create("2005-01-05T09:00"),
+      capacity: 10
+    },
+    {
+      time: AthensDateTime.create("2005-01-05T10:00"),
+      capacity: 10
+    }
+  ])
 });

@@ -4,6 +4,7 @@ import * as AthensDateTime from "./athens-date-time.js";
 export default class SlotRegistration {
   constructor(config) {
     this.slotLength = config.slotLength;
+    this.breakLength = ("breakLength" in config) ? config.breakLength : 0;
 
     this.slots = [];
     this.occupancies = [];
@@ -41,7 +42,7 @@ export default class SlotRegistration {
 
         // calculate the next slot
         var slotDuration = Duration.fromObject({
-          minutes: this.slotLength
+          minutes: this.slotLength + this.breakLength
         });
         slotTimeStart = slotTimeStart.plus(slotDuration);
       }

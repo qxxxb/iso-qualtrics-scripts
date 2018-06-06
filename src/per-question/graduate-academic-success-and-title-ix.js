@@ -11,14 +11,12 @@ Qualtrics.SurveyEngine.addOnload(() => {
               start: AthensDateTime.create("2018-08-14T14:00"),
               end: AthensDateTime.create("2018-08-14T15:00")
             },
-            location: "Baker Center Theater"
           },
           titleIX: {
             time: {
               start: AthensDateTime.create("2018-08-14T15:00"),
               end: AthensDateTime.create("2018-08-14T16:00")
             },
-            location: "Baker Center, Multipurpose Room"
           }
         }
       },
@@ -29,14 +27,12 @@ Qualtrics.SurveyEngine.addOnload(() => {
               start: AthensDateTime.create("2018-08-14T14:00"),
               end: AthensDateTime.create("2018-08-14T15:00")
             },
-            location: "Baker Center, Multipurpose Room"
           },
           academicSuccess: {
             time: {
               start: AthensDateTime.create("2018-08-14T15:00"),
               end: AthensDateTime.create("2018-08-14T16:00")
             },
-            location: "Baker Center Theater"
           }
         }
       }
