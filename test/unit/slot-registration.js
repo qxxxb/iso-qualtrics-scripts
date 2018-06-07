@@ -1,6 +1,7 @@
 import test from "ava";
 import SlotRegistration from "../../src/slot-registration.js";
 import * as AthensDateTime from "../../src/athens-date-time.js";
+import { DateTime } from 'luxon';
 
 test.before(t => {
   t.context.configs = {

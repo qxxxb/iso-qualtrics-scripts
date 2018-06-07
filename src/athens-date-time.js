@@ -1,9 +1,9 @@
 import { DateTime } from "luxon";
 
 export function create(isoString) {
-  return DateTime.fromISO(isoString)
-    .setZone("America/New_York")
-    .setLocale("en-US");
+  return DateTime.fromISO(isoString, { zone: "America/New_York" }).setLocale(
+    "en-US"
+  );
 }
 
 export function timeToString(time) {
