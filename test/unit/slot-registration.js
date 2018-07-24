@@ -428,7 +428,7 @@ test("is day full", t => {
     },
     {
       instanceOf: RangeError,
-      message: "Date in occupancies does not exist in time range"
+      message: "Date does not exist in time range"
     }
   );
 });
