@@ -128,13 +128,7 @@ export default class SlotRegistration {
   isDayFull(date) {
     for (var i = 0; i < this.occupancies.length; i++) {
       if (AthensDateTime.hasSameDate(this.occupancies[i].date, date)) {
-        try {
-          var maxOccupants = this.getMaxOccupantsInDay(date);
-        } catch (e) {
-          throw new RangeError(
-            "Date in occupancies does not exist in time range"
-          );
-        }
+        var maxOccupants = this.getMaxOccupantsInDay(date);
         if (this.occupancies[i].count >= maxOccupants) {
           return true;
         }
