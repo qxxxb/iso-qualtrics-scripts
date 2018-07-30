@@ -7,4 +7,4 @@ for the PID question as done so in the current survey.
 
 ### Resources
 
-TODO: put link to Qualtrics support page on validation
+- https://www.qualtrics.com/support/survey-platform/survey-module/editing-questions/validation/
