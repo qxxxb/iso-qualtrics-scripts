@@ -2,7 +2,7 @@
 
 Install:
   - Git
-  - NodeJS
+  - Node.js
   - npm
 
 Clone this repository with `git`
