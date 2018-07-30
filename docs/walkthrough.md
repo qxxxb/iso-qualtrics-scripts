@@ -203,7 +203,7 @@ Now let's go ahead and add the blocks into the survey flow:
 
 ### Example 2: Undergraduate Paperwork Check-ins
 
-Once again, we first create the introduction block. In this case, it has the same content has the introduction block for graduate paperwork check-ins, so we can just pipe the text:
+Once again, we first create the introduction block. In this case, it has the same content as the introduction block for graduate paperwork check-ins, so we can just pipe the text:
 
 ![screenshot](https://github.com/brickmill/iso-qualtrics-scripts/raw/master/docs/walkthrough/scheduling/example-2/introduction-block.png)
 
