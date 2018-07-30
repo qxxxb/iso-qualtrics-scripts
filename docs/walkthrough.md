@@ -10,7 +10,6 @@ Qualtrics account.
 
 Qualtrics has provided its own excellent documentation here:
 https://www.qualtrics.com/support/survey-platform/
-
 Try to get a decent understanding of the survey platform. There are also
 specific things that you should focus on:
 - Embedded Data
@@ -80,8 +79,7 @@ to explain. A few things to note here:
   a brief description of the event as well as some JavaScript to calculate the
   date, time, and location of the event. The JavaScript often required data in
   the form of embedded data to make the calculation as well (for more
-  information about writing JavaScript, see the appropriate section of this
-  documentation). Here is an example:
+  information about writing JavaScript, see `docs/scripts/`). Here is an example:
 
   ![screenshot](https://github.com/brickmill/iso-qualtrics-scripts/raw/master/docs/walkthrough/scheduling/with-introduction.png)
 
@@ -115,7 +113,7 @@ First create the introduction block:
 ![screenshot](https://github.com/brickmill/iso-qualtrics-scripts/raw/master/docs/walkthrough/scheduling/example-1/introduction-block.png)
 
 The JavaScript for that block will contain a Webpack-compiled version of the
-following (the times and locations may obviously be different from what they actually
+following (the dates and times may obviously be different from what they actually
 should be):
 
 ```js
